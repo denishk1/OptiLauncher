@@ -1,0 +1,377 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:OptiLauncher.ViewModels"
+        x:Class="OptiLauncher.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Title="OptiLauncher"
+        Width="1160"
+        Height="730"
+        MinWidth="1000"
+        MinHeight="650"
+        ExtendClientAreaToDecorationsHint="True"
+        ExtendClientAreaChromeHints="NoChrome"
+        ExtendClientAreaTitleBarHeightHint="-1"
+        TransparencyLevelHint="Mica"
+        WindowStartupLocation="CenterScreen">
+
+    <Window.Styles>
+        <!-- Базовая стилизация окна -->
+        <Style Selector="Window">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="FontFamily" Value="avares://Avalonia.Fonts.Inter/Assets#Inter, Segoe UI, sans-serif" />
+        </Style>
+
+        <!-- Роскошные скруглённые кнопки навигации (меню слева) -->
+        <Style Selector="ListBoxItem">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Padding" Value="16,14"/>
+            <Setter Property="Margin" Value="0,4"/>
+            <Setter Property="CornerRadius" Value="10"/>
+            <Setter Property="Foreground" Value="#8A8A98"/>
+            <Setter Property="Transitions">
+                <Transitions>
+                    <BrushTransition Property="Foreground" Duration="0:0:0.15"/>
+                    <BrushTransition Property="Background" Duration="0:0:0.15"/>
+                </Transitions>
+            </Setter>
+        </Style>
+        <Style Selector="ListBoxItem:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="#10FFFFFF"/>
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+        <Style Selector="ListBoxItem:selected /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="#15007ACC"/>
+            <Setter Property="Foreground" Value="#00A2FF"/>
+        </Style>
+
+        <!-- Системные кнопки окна (Свернуть / Развернуть / Закрыть) -->
+        <Style Selector="Button.WindowControlBtn">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Width" Value="45"/>
+            <Setter Property="Height" Value="32"/>
+            <Setter Property="Foreground" Value="#60606F"/>
+            <Setter Property="Transitions">
+                <Transitions>
+                    <BrushTransition Property="Foreground" Duration="0:0:0.1"/>
+                    <BrushTransition Property="Background" Duration="0:0:0.1"/>
+                </Transitions>
+            </Setter>
+        </Style>
+        <Style Selector="Button.WindowControlBtn:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="#15FFFFFF"/>
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+        <Style Selector="Button.CloseBtn:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="#E81123"/>
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+
+        <!-- Улучшенный стиль полей ввода текста -->
+        <Style Selector="TextBox">
+            <Setter Property="Background" Value="#0F0F14"/>
+            <Setter Property="BorderBrush" Value="#252530"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="Padding" Value="12,10"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="CaretBrush" Value="#00A2FF"/>
+            <Setter Property="Transitions">
+                <Transitions>
+                    <BrushTransition Property="BorderBrush" Duration="0:0:0.15"/>
+                </Transitions>
+            </Setter>
+        </Style>
+        <Style Selector="TextBox:focus /template/ Border#PART_BorderElement">
+            <Setter Property="BorderBrush" Value="#00A2FF"/>
+            <Setter Property="Background" Value="#0A0A0F"/>
+        </Style>
+
+        <!-- Кастомизация выпадающего списка (ComboBox) -->
+        <Style Selector="ComboBox">
+            <Setter Property="Background" Value="#0F0F14"/>
+            <Setter Property="BorderBrush" Value="#252530"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="Padding" Value="14,10"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        </Style>
+        <Style Selector="ComboBox:pointerover /template/ Border#Border">
+            <Setter Property="BorderBrush" Value="#404050"/>
+        </Style>
+        <Style Selector="ComboBoxItem">
+            <Setter Property="Padding" Value="14,10"/>
+            <Setter Property="Foreground" Value="#A0A0B0"/>
+        </Style>
+        <Style Selector="ComboBoxItem:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="#15FFFFFF"/>
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+        <Style Selector="ComboBoxItem:selected /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="#007ACC"/>
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+
+        <!-- Стилизация чекбоксов -->
+        <Style Selector="CheckBox">
+            <Setter Property="Foreground" Value="#8A8A98"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Margin" Value="24,4"/>
+            <Setter Property="Transitions">
+                <Transitions>
+                    <BrushTransition Property="Foreground" Duration="0:0:0.15"/>
+                </Transitions>
+            </Setter>
+        </Style>
+        <Style Selector="CheckBox:pointerover">
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+    </Window.Styles>
+
+    <Panel>
+        <!-- Премиальный размытый фон заднего плана -->
+        <ExperimentalAcrylicBorder IsHitTestVisible="False">
+            <ExperimentalAcrylicBorder.Material>
+                <ExperimentalAcrylicMaterial
+                    BackgroundSource="Digger"
+                    TintColor="#050508"
+                    TintOpacity="0.94"
+                    MaterialOpacity="0.6" />
+            </ExperimentalAcrylicBorder.Material>
+        </ExperimentalAcrylicBorder>
+
+        <!-- Декоративное свечение в углах (без фильтров эффектов для совместимости) -->
+        <Canvas IsHitTestVisible="False" Opacity="0.15">
+            <Ellipse Width="450" Height="450" Fill="#007ACC" Margin="-150,-150,0,0"/>
+            <Ellipse Width="400" Height="400" Fill="#9B59B6" Margin="850,450,0,0"/>
+        </Canvas>
+
+        <!-- Главный контейнер сетки -->
+        <Grid RowDefinitions="36, *">
+            
+            <!-- 1. КАСТОМНЫЙ ТАЙТЛБАР -->
+            <Grid Grid.Row="0" ColumnDefinitions="Auto, *, Auto" Background="#05000000">
+                <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center" Margin="18,0,0,0" Spacing="10">
+                    <TextBlock Text="⚡" FontSize="14" Foreground="#00A2FF" VerticalAlignment="Center"/>
+                    <TextBlock Text="OptiLauncher" FontSize="12" FontWeight="SemiBold" Foreground="#555560" VerticalAlignment="Center" LetterSpacing="0.5"/>
+                </StackPanel>
+                
+                <Rectangle Grid.Column="1" Fill="Transparent"/>
+
+                <!-- Кнопки управления -->
+                <StackPanel Grid.Column="2" Orientation="Horizontal">
+                    <Button Content="—" Classes="WindowControlBtn" Click="MinimizeWindow"/>
+                    <Button Content="🗖" Classes="WindowControlBtn" Click="MaximizeWindow"/>
+                    <Button Content="✕" Classes="WindowControlBtn CloseBtn" Click="CloseWindow"/>
+                </StackPanel>
+            </Grid>
+
+            <!-- 2. ОСНОВНОЙ РАЗДЕЛ -->
+            <Grid Grid.Row="1" ColumnDefinitions="280, *">
+                
+                <!-- ЛЕВАЯ ПАНЕЛЬ СЕТКИ -->
+                <Grid Grid.Row="0" Grid.Column="0" RowDefinitions="Auto, *, Auto, Auto" Background="#3007070B" Margin="0,0,1,0">
+                    
+                    <!-- Верхний Брендинг -->
+                    <StackPanel Grid.Row="0" Margin="28,24,28,20" Spacing="4">
+                        <TextBlock Text="OPTI" FontSize="30" FontWeight="Black" LetterSpacing="3" Foreground="White"/>
+                        <TextBlock Text="NEXT-GEN LAUNCHER" FontSize="9" FontWeight="Bold" LetterSpacing="1.5" Foreground="#00A2FF"/>
+                    </StackPanel>
+
+                    <!-- НАВИГАЦИЯ -->
+                    <ListBox Grid.Row="1" Background="Transparent" BorderThickness="0" Margin="14,0" SelectedIndex="0">
+                        <ListBoxItem>
+                            <StackPanel Orientation="Horizontal" Spacing="14">
+                                <TextBlock Text="💎" FontSize="15" VerticalAlignment="Center"/>
+                                <TextBlock Text="Главный экран" FontWeight="Medium" FontSize="13" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </ListBoxItem>
+                        <ListBoxItem>
+                            <StackPanel Orientation="Horizontal" Spacing="14">
+                                <TextBlock Text="📦" FontSize="15" VerticalAlignment="Center"/>
+                                <TextBlock Text="Управление сборками" FontWeight="Medium" FontSize="13" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </ListBoxItem>
+                        <ListBoxItem>
+                            <StackPanel Orientation="Horizontal" Spacing="14">
+                                <TextBlock Text="🛠️" FontSize="15" VerticalAlignment="Center"/>
+                                <TextBlock Text="Настройки лаунчера" FontWeight="Medium" FontSize="13" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </ListBoxItem>
+                    </ListBox>
+
+                    <!-- ТЕХНИЧЕСКИЕ ТУМБЛЕРЫ -->
+                    <StackPanel Grid.Row="2" Margin="0,0,0,24" Spacing="2">
+                        <TextBlock Text="ФИЛЬТР ВЕРСИЙ" FontSize="10" FontWeight="Bold" Foreground="#444450" Margin="28,0,28,10" LetterSpacing="1.5"/>
+                        <CheckBox Content="Релизы (Ванилла)" IsChecked="{Binding ShowReleases}"/>
+                        <CheckBox Content="Снапшоты" IsChecked="{Binding ShowSnapshots}"/>
+                        <CheckBox Content="Экспериментальные" IsChecked="{Binding ShowExperimental}"/>
+                        <CheckBox Content="Сборки Forge" IsChecked="{Binding ShowForge}"/>
+                        <CheckBox Content="Сборки Fabric" IsChecked="{Binding ShowFabric}"/>
+                    </StackPanel>
+
+                    <!-- ПАНЕЛЬ ПРОФИЛЯ -->
+                    <Border Grid.Row="3" Background="#0C0C12" CornerRadius="14" Margin="16" Padding="14" BorderBrush="#1F1F2A" BorderThickness="1">
+                        <Grid ColumnDefinitions="Auto, *">
+                            <Border Grid.Column="0" Width="38" Height="38" CornerRadius="19" ClipToBounds="True">
+                                <Border.Background>
+                                    <LinearGradientBrush StartPoint="0%,0%" EndPoint="100%,100%">
+                                        <GradientStop Offset="0" Color="#007ACC"/>
+                                        <GradientStop Offset="1" Color="#00A2FF"/>
+                                    </LinearGradientBrush>
+                                </Border.Background>
+                                <TextBlock Text="👤" FontSize="18" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="14,0,0,0" Spacing="2">
+                                <TextBlock Text="{Binding SelectedUsername, FallbackValue='Не авторизован'}" FontWeight="Bold" FontSize="13" Foreground="White"/>
+                                <StackPanel Orientation="Horizontal" Spacing="6">
+                                    <Ellipse Width="6" Height="6" Fill="{Binding StatusColor, FallbackValue='#E81123'}" VerticalAlignment="Center"/>
+                                    <TextBlock Text="{Binding ActiveAccountTypeDisplay, FallbackValue='Офлайн-режим'}" FontSize="10" Foreground="#8A8A98"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                </Grid>
+
+                <!-- ПРАВАЯ ЧАСТЬ ЭКРАНА СЕТКИ -->
+                <Grid Grid.Row="0" Grid.Column="1" RowDefinitions="*, 120" Background="#1407070B">
+                    
+                    <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto">
+                        <StackPanel Margin="36" Spacing="28">
+                            
+                            <!-- Главный Роскошный Баннер -->
+                            <Border Height="200" CornerRadius="18" ClipToBounds="True">
+                                <Border.Background>
+                                    <LinearGradientBrush StartPoint="0%,0%" EndPoint="100%,100%">
+                                        <GradientStop Offset="0" Color="#0C1B33"/>
+                                        <GradientStop Offset="1" Color="#0A111F"/>
+                                    </LinearGradientBrush>
+                                </Border.Background>
+                                <Panel>
+                                    <!-- Декоративный элемент баннера -->
+                                    <Ellipse Width="300" Height="300" Fill="#00A2FF" Opacity="0.1" Margin="400,-100,0,0"/>
+                                    
+                                    <Grid RowDefinitions="*, Auto" Margin="30">
+                                        <Border Grid.Row="0" Background="#15FFFFFF" HorizontalAlignment="Left" VerticalAlignment="Top" Padding="10,5" CornerRadius="6">
+                                            <TextBlock Text="ДОБРО ПОЖАЛОВАТЬ В ОПТИМИЗИРОВАННУЮ СРЕДУ" FontSize="10" FontWeight="Bold" Foreground="#00A2FF" LetterSpacing="1"/>
+                                        </Border>
+                                        <StackPanel Grid.Row="1" Spacing="6">
+                                            <TextBlock Text="Система лаунчера успешно инициализирована" FontSize="24" FontWeight="Black" Foreground="White"/>
+                                            <TextBlock Text="Для старта игры выберите способ авторизации слева, выберите желаемую сборку в меню и нажмите ИГРАТЬ." FontSize="13" Foreground="#9898A5"/>
+                                        </StackPanel>
+                                    </Grid>
+                                </Panel>
+                            </Border>
+
+                            <!-- Блок ввода данных авторизации (РАБОЧАЯ ФОРМА) -->
+                            <Border Background="#0C0C12" CornerRadius="16" Padding="24" BorderBrush="#1F1F2A" BorderThickness="1">
+                                <StackPanel Spacing="16">
+                                    <TextBlock Text="Авторизация игрового аккаунта" FontSize="15" FontWeight="Bold" Foreground="White"/>
+                                    
+                                    <Grid ColumnDefinitions="*, *, Auto" RowDefinitions="Auto, Auto">
+                                        <!-- Ввод Ника -->
+                                        <StackPanel Grid.Row="0" Grid.Column="0" Spacing="6" Margin="0,0,16,0">
+                                            <TextBlock Text="Никнейм или Логин (Email):" FontSize="11" Foreground="#8A8A98"/>
+                                            <TextBox Watermark="Например: MinerPro" Text="{Binding InputUsername, Mode=TwoWay}"/>
+                                        </StackPanel>
+
+                                        <!-- Выбор типа аккаунта -->
+                                        <StackPanel Grid.Row="0" Grid.Column="1" Spacing="6" Margin="0,0,16,0">
+                                            <TextBlock Text="Метод авторизации:" FontSize="11" Foreground="#8A8A98"/>
+                                            <ComboBox ItemsSource="{Binding AccountTypeList}" SelectedItem="{Binding TempAccountType, Mode=TwoWay}"/>
+                                        </StackPanel>
+
+                                        <!-- Кнопка войти -->
+                                        <Button Grid.Row="0" Grid.Column="2" Content="Войти" Command="{Binding LoginCommand}" Width="110" Height="41" Margin="0,21,0,0" CornerRadius="8" Background="#007ACC" Foreground="White" FontSize="13" FontWeight="Bold" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+                                    </Grid>
+                                </StackPanel>
+                            </Border>
+
+                            <!-- Раздел статуса сети -->
+                            <Grid ColumnDefinitions="*, 300" Margin="0,6,0,0">
+                                <StackPanel Grid.Column="0" Spacing="14" Margin="0,0,24,0">
+                                    <TextBlock Text="Статус верификации" FontSize="16" FontWeight="Bold" Foreground="White"/>
+                                    <Border Background="#0C0C12" Padding="18" CornerRadius="14" BorderBrush="#1F1F2A" BorderThickness="1">
+                                        <StackPanel Spacing="8">
+                                            <TextBlock Text="Текущее состояние системы" FontWeight="SemiBold" Foreground="#00A2FF" FontSize="13"/>
+                                            <StackPanel Orientation="Horizontal" Spacing="8" Margin="0,4,0,0">
+                                                <TextBlock Text="Выбранная вами версия:" Foreground="#8A8A98" FontSize="13"/>
+                                                <TextBlock Text="{Binding SelectedVersion.Name, FallbackValue='Не выбрана'}" Foreground="White" FontWeight="Bold" FontSize="13"/>
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </Border>
+                                </StackPanel>
+
+                                <StackPanel Grid.Column="1" Spacing="14">
+                                    <TextBlock Text="Ресурсы системы" FontSize="16" FontWeight="Bold" Foreground="White"/>
+                                    <Border Background="#0C0C12" Padding="18" CornerRadius="14" BorderBrush="#1F1F2A" BorderThickness="1">
+                                        <StackPanel Spacing="10">
+                                            <Grid ColumnDefinitions="*, Auto">
+                                                <TextBlock Text="Выделенная память:" FontSize="12" Foreground="#8A8A98"/>
+                                                <TextBlock Grid.Column="1" Text="4096 МБ" FontSize="12" FontWeight="SemiBold" Foreground="White"/>
+                                            </Grid>
+                                            <Grid ColumnDefinitions="*, Auto">
+                                                <TextBlock Text="Статус авторизации:" FontSize="12" Foreground="#8A8A98"/>
+                                                <TextBlock Grid.Column="1" Text="{Binding ActiveAccountTypeDisplay}" FontSize="12" FontWeight="SemiBold" Foreground="#00A2FF"/>
+                                            </Grid>
+                                        </StackPanel>
+                                    </Border>
+                                </StackPanel>
+                            </Grid>
+
+                        </StackPanel>
+                    </ScrollViewer>
+
+                    <!-- 3. НИЖНЯЯ ПАНЕЛЬ И КНОПКА ЗАПУСКА -->
+                    <Border Grid.Row="1" Background="#0C0C12" BorderBrush="#1C1C26" BorderThickness="0,1,0,0">
+                        <Grid ColumnDefinitions="*, Auto, *" Margin="36,0">
+                            
+                            <!-- Селектор версий игры -->
+                            <StackPanel Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left" Spacing="6">
+                                <TextBlock Text="Сборка или версия Minecraft:" FontSize="11" Foreground="#60606F" FontWeight="Medium"/>
+                                <ComboBox Width="270" ItemsSource="{Binding FilteredVersions}" SelectedItem="{Binding SelectedVersion}">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal" Spacing="10">
+                                                <TextBlock Text="{Binding Name}" Foreground="White" FontWeight="Medium"/>
+                                                <TextBlock Text="{Binding Type}" Foreground="#555566" FontSize="10" VerticalAlignment="Center"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                            </StackPanel>
+
+                            <!-- Крупная центральная кнопка ИГРАТЬ -->
+                            <Button Grid.Column="1" Content="ИГРАТЬ" Command="{Binding PlayCommand}" VerticalAlignment="Center" HorizontalAlignment="Center" Width="240" Height="52" CornerRadius="12" Background="#27AE60" Foreground="White" FontSize="16" FontWeight="Heavy" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+                                <Button.Styles>
+                                    <Style Selector="Button">
+                                        <Setter Property="Transitions">
+                                            <Transitions>
+                                                <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.1"/>
+                                            </Transitions>
+                                        </Setter>
+                                    </Style>
+                                    <Style Selector="Button:pointerover">
+                                        <Setter Property="RenderTransform" Value="scale(1.02)"/>
+                                    </Style>
+                                </Button.Styles>
+                            </Button>
+
+                            <!-- Правая часть: Статус -->
+                            <StackPanel Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Right" Spacing="4">
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="8">
+                                    <Ellipse Width="8" Height="8" Fill="#2ECC71" VerticalAlignment="Center"/>
+                                    <TextBlock Text="Ядро готово" FontSize="12" Foreground="#2ECC71" FontWeight="SemiBold"/>
+                                </StackPanel>
+                                <TextBlock Text="Синхронизировано" FontSize="11" Foreground="#555566" HorizontalAlignment="Right"/>
+                            </StackPanel>
+
+                        </Grid>
+                    </Border>
+                    
+                </Grid>
+            </Grid>
+        </Grid>
+    </Panel>
+</Window>
